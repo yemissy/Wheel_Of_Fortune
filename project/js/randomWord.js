@@ -252,3 +252,7 @@ const words = [
 
       return correctSize[index];
   }
+
+module.exports = { 
+    getRandomWord
+}
