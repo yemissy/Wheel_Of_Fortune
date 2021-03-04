@@ -244,15 +244,14 @@ const words = [
     "wrapped","write","writer","writing","written","wrong","wrote","yard",
     "year","yellow","yes","yesterday","yet","you","young","younger",
     "your","yourself","youth","zero","zebra","zipper","zoo","zulu"
-  ];
+];
 
-  const getRandomWord = (maxLength=5) => {
-      const correctSize = words.filter((word) => word.length >= maxLength );
-      const index = Math.floor(Math.random() * correctSize.length);
-
-      return correctSize[index];
-  }
-
-module.exports = { 
-    getRandomWord
+const getRandomWord  = (maxLength=5) => {
+    const correctSize = words.filter((word) => word.length >= maxLength );
+    const index = Math.floor(Math.random() * correctSize.length);
+    return correctSize[index];
 }
+
+// module.exports = {getRandomWord}
+  
+
