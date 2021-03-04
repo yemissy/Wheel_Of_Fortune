@@ -72,10 +72,11 @@ const newWordSBtntyle = {
 }
 
 const hintDivStyle = {
+    // border: "solid red", 
     width: `${28}em`,
     height: `${3}em`,
     position: 'relative',
-    top: `${9}em`,
+    top: `${0}em`,
     left :`${3.3}em`,
     textAlign: 'left',
     display: 'flex',
@@ -178,228 +179,6 @@ function addToBody (){
 
 addToBody()
 
-// TODO: CREATE THE GAME FUNCTIONS
-
-
-//Show the empty lines when new word button is clicked
-function clickNewBtn() {
-    let clickCount = 0
-    let str = ""
-    newWordBtn.addEventListener('click', () => {
-        prevClick = clickCount
-        clickCount += 1
-        currentWord = getRandomWord()
-        console.log(currentWord)
-        str = ""
-        randomWord.word = currentWord
-
-        hintDiv = document.getElementById('hint')
-        theHint = document.getElementById('theHint')
-
-        //Create dashes
-        let blankStr = new Array(currentWord.length)
-        while(blankStr.length > 0){
-            str += '_' + '  '
-            blankStr.length -= 1
-        }
-        console.log(str)
-        h1 = document.createElement('h1')
-        h1.id = "dash-str"
-        h1.innerText = str
-        div = document.createElement('div')
-        div.id = "dash-div"
-        div.appendChild(h1)
-
-        let dashDivStyle ={
-            width:`${20}em`,
-            height:`${5}em`,
-            position:'relative',
-            left: `${7.5}em`,
-            bottom: `${12}em`
-        }
-
-        Object.assign(div.style, dashDivStyle)
-        centerDiv.append(div)
-
-        while(clickCount > 0){
-            dashStr = document.getElementById('dash-str')
-            dashDiv = document.getElementById('dash-div')
-            centerDiv.removeChild(dashDiv)
-            dashStr.innerText = str
-            centerDiv.append(div)
-
-            if(startBtn.disabled === true){
-                startBtn.disabled = false
-            }
-            
-            clickCount -= 1
-            theHint.innerText = ""
-            hintDiv.style.visibility = "hidden"
-        }
-        charInput = document.getElementById('char-input')
-        charInput = ""
-        console.log(currentWord)
-        revealLetters(currentWord, str, clickCount)
-    })
-
-}
-clickNewBtn()
-
-//Reaveal instances of the letter
-function revealLetters(word, dashes, clicks){
-    console.log(word)
-    currentWrd = word
-    letters = currentWrd.split('')
-    randomIndx = []
-    hintIndexes = []
-    h1StrEl = document.getElementById("dash-str")
-    charInput = document.getElementById('char-input')
-    dashstrs =  h1StrEl.innerText.split(' ')
-    strtBtnClick = 0
-    
-    hintDiv = document.getElementById('hint')
-    theHint = document.getElementById('theHint')
-    
-
-    // get 3 random numbers
-    if(letters.length <= 6){
-        j  = 2
-        while(j > 0){
-            index = Math.floor(Math.random() * letters.length)
-            if(randomIndx.includes(index)){
-                newIndex  = index = Math.floor(Math.random() * letters.length)
-                randomIndx.push(newIndex)
-            }else{
-                randomIndx.push(index)
-            }
-            j --
-        }
-    }
-    else{
-        j = 3
-        while(j > 0){
-            index = Math.floor(Math.random() * letters.length)
-            if(randomIndx.includes(index)){
-                newIndex  = index = Math.floor(Math.random() * letters.length)
-                randomIndx.push(newIndex)
-            }else{
-                randomIndx.push(index)
-            }
-            j --
-        }
-    }
-
-    if(letters.length <= 6){
-        i = 2
-        while(i > 0){
-
-            index = Math.floor(Math.random() * letters.length)
-            if(hintIndexes.includes(index)){
-                hintIndex  = index = Math.floor(Math.random() * letters.length)
-                hintIndexes.push(hintIndex)
-            }else{
-                hintIndexes.push(index)
-            }
-            i --
-        } 
-    }
-    else{
-        i = 3
-        while(i > 0){
-
-            index = Math.floor(Math.random() * letters.length)
-            if(hintIndexes.includes(index)){
-                hintIndex  = index = Math.floor(Math.random() * letters.length)
-                hintIndexes.push(hintIndex)
-            }else{
-                hintIndexes.push(index)
-            }
-            i --
-        } 
-    }
-    
-    console.log(letters, currentWrd, "307 ")
-    //onclick of start reveal letters
-    startBtn.addEventListener('click', () => {
-        charInput.disabled === true ? false : true
-        
-        console.log(letters, currentWrd, "310 ")
-        strtBtnClick += 1
-        console.log(letters, currentWrd, randomIndx, hintIndexes, "315 ")
-        //Check if all indexes are equal 
-        equalIndx = randomIndx.every(currentVal => currentVal === randomIndx[0])
-        if(!equalIndx === true){
-            for(let i = 0 ; i < dashstrs.length; i++){
-                if(randomIndx.includes(i)){
-                    console.log("I'm here 334")
-                    theIndx = i
-                    if(dashstrs[theIndx] === "_"){
-                        dashstrs[i] = letters[theIndx]
-                        console.log("I'm here 338")
-                        if(startBtn.disabled === true){
-                           startBtn.disabled = false
-                           console.log("I'm here 341")
-                        }
-                    }
-                }
-            }
-            h1StrEl.innerText = dashstrs.join(' ')
-            dashstrs = h1StrEl.innerText.split(' ')
-            console.log(h1StrEl.innerText, dashStr, 'im here 344')
-            if(letters.length >= 7){
-                console.log('im here 347')
-                for(let i = 0 ; i < dashstrs.length; i++){
-                    console.log('here 1')
-                    if(hintIndexes.includes(i)){
-                        console.log('here 2')
-                        theIndx = i
-                        if(dashstrs[theIndx] === "_"){
-                            dashstrs[theIndx] = letters[theIndx]
-                            console.log('here 3')
-                            console.log('here 5')
-                        }
-                    }
-                }
-            }
-            theHint.innerText = dashstrs.join(' ')
-            console.log(theHint.innerText, theHint.innerText,'im here 344')
-            hintDiv.style.visibility = "visible"
-        }
-        else{
-            //Edge Case word = ["a", "u", "t", "h", "o", "r"], randomindx = [4,4]
-            //All indexes all are true/same. or word greater than 7 This will be too hard to guess. Create a hint
-            dashstrs[randomIndx[0]] = letters[randomIndx[0]]
-            h1StrEl.innerText = dashstrs.join(' ')
-            console.log(h1StrEl.innerText, dashstrs)
-            dashstrs = h1StrEl.innerText.split(' ')
-            console.log(dashstrs)
-            console.log(hintIndexes)
-            if(equalIndx === true || letters.length > 7){
-                for(let i = 0 ; i < dashstrs.length; i++){
-                    console.log('here 1')
-                    if(hintIndexes.includes(i)){
-                        console.log('here 2')
-                        theIndx = i
-                        if(dashstrs[theIndx] === "_"){
-                            dashstrs[theIndx] = letters[theIndx]
-                            console.log('here 3')
-                            console.log('here 5')
-                        }
-                    }
-                }
-                // theHint.innerText = dashstrs.join(' ')
-                // hintDiv.style.visibility = "visible"
-                strtBtnClick -= 1
-            }        
-        }
-        charInput.disabled = false
-        console.log(strtBtnClick, )
-        hintDiv.style.visibility = "visible"
-    })
-    getUserInput(dashstrs, h1StrEl, letters)
-    getWord(letters.join(''), h1StrEl)
-}
-
 //Create char guess div
 function addCharGuessDiv(){
     //Create elements to enter guesses. 
@@ -435,16 +214,187 @@ function addCharGuessDiv(){
 
 }
 addCharGuessDiv()
+
+// TODO: CREATE THE GAME FUNCTIONS
+
+
+//Show the empty lines when new word button is clicked
+function clickNewBtn() {
+    let clickCount = 0
+    newWordBtn.addEventListener('click', () => {
+        prevClick = clickCount
+        clickCount += 1
+        currentWord = getRandomWord()
+        console.log(currentWord)
+        str = ""
+        randomWord.word = currentWord
+
+        hintDiv = document.getElementById('hint')
+        theHint = document.getElementById('theHint')
+
+        //Create dashes
+        let blankStr = new Array(currentWord.length)
+        while(blankStr.length > 0){
+            str += '_' + '  '
+            blankStr.length -= 1
+        }
+        console.log(str)
+        h1 = document.createElement('h1')
+        h1.id = "dash-str"
+        h1.innerText = str
+        div = document.createElement('div')
+        div.id = "dash-div"
+        div.appendChild(h1)
+
+        let dashDivStyle ={
+            width:`${20}em`,
+            height:`${5}em`,
+            position:'relative',
+            left: `${7.5}em`,
+            bottom: `${15.5}em`
+        }
+
+        Object.assign(div.style, dashDivStyle)
+        centerDiv.append(div)
+
+        while(clickCount > 0){
+            dashStr = document.getElementById('dash-str')
+            dashDiv = document.getElementById('dash-div')
+            centerDiv.removeChild(dashDiv)
+            dashStr.innerText = str
+            centerDiv.append(div)
+
+            if(startBtn.disabled === true){
+                startBtn.disabled = false
+            }
+            
+            clickCount -= 1
+            theHint.innerText = ""
+            hintDiv.style.visibility = "hidden"
+        }
+        charInput = document.getElementById('char-input')
+        charInput = ""
+        console.log(currentWord, str, 'line 241')
+        revealLetters(currentWord)
+    })
+
+}
+clickNewBtn()
+
+
+
+//Reaveal instances of the letter
+function revealLetters(word){
+    currentWrd = word
+    letters = currentWrd.split('')
+    randomIndx = []
+    hintIndexes = []
+    h1StrEl = document.getElementById("dash-str")
+    charInput = document.getElementById('char-input')
+    dashstrs =  h1StrEl.innerText.split(' ')
+    strtBtnClick = 0
+    let i = 3
+    
+    hintDiv = document.getElementById('hint')
+    theHint = document.getElementById('theHint')
+    
+
+    // get 3 random numbers
+    if(letters.length <= 6){
+        j  = 2
+        while(j > 0){
+            index = Math.floor(Math.random() * letters.length)
+            if(randomIndx.includes(index)){
+                newIndex  = index = Math.floor(Math.random() * letters.length)
+                randomIndx.push(newIndex)
+            }else{
+                randomIndx.push(index)
+            }
+            j --
+        }
+    }
+    else{
+        j = 3
+        while(j > 0){
+            index = Math.floor(Math.random() * letters.length)
+            if(randomIndx.includes(index)){
+                newIndex  = index = Math.floor(Math.random() * letters.length)
+                randomIndx.push(newIndex)
+            }else{
+                randomIndx.push(index)
+            }
+            j --
+        }
+    }
+
+
+    while(i > 0){
+        index = Math.floor(Math.random() * letters.length)
+        if(hintIndexes.includes(index)){
+            hintIndex  = index = Math.floor(Math.random() * letters.length)
+            hintIndexes.push(hintIndex)
+        }
+        else{
+            hintIndexes.push(index)
+        }
+        i --
+    } 
+
+
+    //onclick of start reveal letters
+    startBtn.addEventListener('click', () => {
+
+        // charInput.disabled === true ? false : true
+    
+        strtBtnClick += 1
+        //Check if all indexes are equal 
+        equalIndx = randomIndx.every(currentVal => currentVal === randomIndx[0])
+
+        if(!equalIndx === true && letters.length <= 7){
+            for(let i = 0 ; i < dashstrs.length; i++){
+                if(randomIndx.includes(i)){
+                    theIndx = i
+                    if(dashstrs[theIndx] === "_"){
+                        dashstrs[i] = letters[theIndx]
+                    }
+                }
+            }
+            h1StrEl.innerText = dashstrs.join(' ')
+        }
+        else{
+            
+            //Edge Case word = ["a", "u", "t", "h", "o", "r"], randomindx = [4,4]
+            //All indexes all are true/same. or word greater than 7 This will be too hard to guess. Create a hint
+
+            dashstrs[randomIndx[0]] = letters[randomIndx[0]]
+            h1StrEl.innerText = dashstrs.join(' ')
+            dashstrs = h1StrEl.innerText.split(' ')
+            hintDiv.style.visibility = "visible"
+            if(equalIndx === true || letters.length > 7){
+                for(let i = 0 ; i < dashstrs.length; i++){
+                    if(hintIndexes.includes(i)){
+                        theIndx = i
+                        if(dashstrs[theIndx] === "_"){
+                            dashstrs[theIndx] = letters[theIndx]
+                        }
+                    }
+                }
+            } 
+            theHint.innerText = dashstrs.join(' ')
+        }
+        strtBtnClick -= 1
+        charInput.disabled = false
+    })
+    getUserInput(dashstrs, h1StrEl, letters)
+    getWord(letters.join(''), h1StrEl)
+}
+
 //Write a function to get user input for characters
 function getUserInput(dashArr, htmlEl, wordArr){
-    console.log(dashArr, htmlEl, wordArr)
-    let inputField = document.getElementById('char-input')
-    let j = 0
 
-
+    inputField = document.getElementById('char-input')
     inputField.addEventListener('keyup', (event) => {
         input = event.target.value
-        console.log(input)
         regEx = /[0-9]/g
         alphabets = ["a","b", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w","x", "y","z"]
         randomWord.guessCharacters.push(input)
@@ -453,7 +403,6 @@ function getUserInput(dashArr, htmlEl, wordArr){
             throw new Error("Please Enter Valid Alphabets")
         }
         else{
-            console.log(wordArr, input,wordArr.includes(input), 'here here' )
             //Check if e.key is included in word, then Iterate through the wordArr, to find the position of the letter
             if(wordArr.includes(input)){
                 for(let i = 0; i < wordArr.length; i++){
@@ -467,7 +416,7 @@ function getUserInput(dashArr, htmlEl, wordArr){
                     }
                 }
                 event.target.value = ''
-                // htmlEl.innerText = dashArr.join(' ')
+                htmlEl.innerText = dashArr.join(' ')
                 dashesLeft = dashArr.filter(dash => dash === "_").length
                 if(dashesLeft <= 2){
                     inputField.disabled = true
@@ -483,6 +432,7 @@ function getUserInput(dashArr, htmlEl, wordArr){
             }
         }
     })
+
 }
 
 
@@ -523,8 +473,16 @@ function getWord(word, h1StrEl){
             h1StrEl.innerText = word
             inputField.value = ""
         }
+        restartGame()
     })
+
 }
+
+// function restartGame(){
+//     clickNewBtn()
+//     // revealLetters()
+//     // getUserInput()
+// }
 
 //Function timer
 
